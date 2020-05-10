@@ -12,6 +12,7 @@ const usersController = require('../app/controllers/usersController')
 router.post('users/register', usersController.register)
 router.post('/users/login', usersController.login)
 router.get('/users/account', authenticateUser, usersController.account)
+router.delete('/users/logout', authenticateUser, usersController.logout)
 
 // url funcitonality/
 
