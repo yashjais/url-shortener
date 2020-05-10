@@ -29,3 +29,9 @@ module.exports.login = (req, res) => {
             res.status('401').send('invalid email or password')
         })
 }
+
+module.exports.account = (req, res) => {
+    const { user } = req
+    user.token = req.token
+    res.send(pick(user, '_id', 'username', 'email'))
+}

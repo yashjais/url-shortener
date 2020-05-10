@@ -66,6 +66,22 @@ userSchema.pre('save', function (next) {
     }
 })
 
+userSchema.statics.findByToken = function (token) {
+    const User = this
+    let tokenData
+    try {
+        tokenData = jwt.verify(token, 'jwt@123')
+    }
+    catch (err) {
+        return Promise.reject(err)
+    }
+    // console.log(tokenData)
+    return User.findOne({
+        _id: tokenData._id,
+        'tokens.token': token
+    })
+}
+
 userSchema.methods.generateToken = function () {
     const user = this
     // console.log('code is in static method')
