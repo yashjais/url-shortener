@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const validator = require('validator')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const userSchema = new Schema({
     username: {
@@ -41,6 +43,75 @@ const userSchema = new Schema({
         }
     ]
 })
+
+userSchema.pre('save', function (next) {
+    const user = this
+    // console.log('user is in pre save')
+    if (user.isNew) {
+        // console.log('in if of pre')
+        bcrypt.genSalt(10)
+            .then(salt => {
+                return bcrypt.hash(user.password, salt)
+            })
+            .then(encPass => {
+                user.password = encPass
+                next()
+            })
+            .catch(err => {
+                Promise.reject('gen salt is not found')
+            })
+    } else {
+        // console.log('in else of pre')
+        next()
+    }
+})
+
+userSchema.methods.generateToken = function () {
+    const user = this
+    // console.log('code is in static method')
+    // console.log(user)
+    const tokenData = {
+        _id: user._id,
+        username: user.username,
+        createdAt: Number(new Date())
+    }
+    const token = jwt.sign(tokenData, 'jwt@123')
+    user.tokens.push({ token })
+    return user.save()
+        .then(user => {
+            return Promise.resolve(token)
+        })
+        .catch(err => {
+            return Promise.reject(err)
+        })
+
+}
+
+
+userSchema.statics.findByCredentials = function (email, password) {
+    const User = this
+    return User.findOne({ email })
+        .then(function (user) {
+            if (!user) {
+                return Promise.reject('invalid email/password')
+            }
+            return bcrypt.compare(password, user.password)
+                .then(function (result) {
+                    if (result) {
+                        return Promise.resolve(user)
+                    } else {
+                        return Promise.reject('invalid email/password')
+                    }
+                })
+                .catch(function (err) {
+                    return Promise.reject(err)
+                })
+        })
+        .catch(function (err) {
+            return Promise.reject(err)
+        })
+}
+
 
 const User = mongoose.model('User', userSchema)
 
