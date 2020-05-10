@@ -4,8 +4,8 @@ const setUpDB = require('./config/database')
 const port = 3010
 const router = require('./config/routes')
 
+app.use(express.json())
 app.use('/', router)
-
 
 setUpDB()
 
