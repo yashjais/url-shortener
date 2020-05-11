@@ -9,7 +9,7 @@ module.exports.register = (req, res) => {
         .then(user => {
             // res.send(user)
             // console.log(user)
-            res.send(pick(user, ['_id', 'username', 'email']))
+            res.send(pick(user, ['_id', 'name', 'email']))
         })
         .catch(err => res.send(err))
 }
@@ -33,7 +33,7 @@ module.exports.login = (req, res) => {
 module.exports.account = (req, res) => {
     const { user } = req
     user.token = req.token
-    res.send(pick(user, '_id', 'username', 'email'))
+    res.send(pick(user, '_id', 'name', 'email', 'mobile'))
 }
 
 module.exports.logout = (req, res) => {

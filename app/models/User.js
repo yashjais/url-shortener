@@ -5,11 +5,10 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const userSchema = new Schema({
-    username: {
+    name: {
         type: String,
         required: true,
         minlength: 5,
-        unique: true
     },
     email: {
         type: String,
@@ -23,6 +22,12 @@ const userSchema = new Schema({
                 return 'format is invalid'
             }
         }
+    },
+    mobile: {
+        type: String,
+        unique: true,
+        minlength: 10,
+        maxlength: 10
     },
     password: {
         type: String,
@@ -88,7 +93,7 @@ userSchema.methods.generateToken = function () {
     // console.log(user)
     const tokenData = {
         _id: user._id,
-        username: user.username,
+        name: user.name,
         createdAt: Number(new Date())
     }
     const token = jwt.sign(tokenData, 'jwt@123')
