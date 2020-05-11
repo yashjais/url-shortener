@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from 'axios'
+import axios from '../config/axios'
 
 class Register extends React.Component {
     constructor() {
@@ -23,7 +23,7 @@ class Register extends React.Component {
         if (this.state.mobile.length == 10) {
             formData.mobile = this.state.mobile
         }
-        axios.post('localhost://3010/users/register')
+        axios.post('/users/register')
             .then(res => console.log(res.data))
             .catch(err => alert(err))
     }

@@ -5,8 +5,8 @@ const port = 3010
 const router = require('./config/routes')
 const cors = require('cors')
 
-app.use(express.json())
 app.use(cors())
+app.use(express.json())
 app.use('/', router)
 
 setUpDB()
