@@ -6,7 +6,7 @@ import Register from './users/register'
 function App() {
   return (
     <BrowserRouter>
-      <div >
+      <div className="container">
         <Link to="/login">login</Link>
         <Link to="/register">register</Link>
 
