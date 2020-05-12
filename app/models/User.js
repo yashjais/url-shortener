@@ -46,7 +46,16 @@ const userSchema = new Schema({
                 default: Date.now
             }
         }
-    ]
+    ],
+    loginInfo: {
+        count: {
+            type: String,
+            default: 1
+        },
+        ipAddress: {
+            type: String
+        }
+    }
 })
 
 userSchema.pre('save', function (next) {
@@ -89,6 +98,7 @@ userSchema.statics.findByToken = function (token) {
 
 userSchema.methods.generateToken = function () {
     const user = this
+    user.loginInfo.count = Number(user.loginInfo.count) + 1
     // console.log('code is in static method')
     // console.log(user)
     const tokenData = {

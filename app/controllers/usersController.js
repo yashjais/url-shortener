@@ -20,13 +20,20 @@ module.exports.login = (req, res) => {
     User.findByCredentials(body.email, body.password)
         .then(user => {
             // res.send(user)
-            return user.generateToken()
-        })
-        .then(function (token) {
-            res.send({ token })
+            // console.log('in the login controller', user.loginInfo.count)
+            if (Number(user.loginInfo.count) < 100) {
+                user.generateToken()
+                    .then(function (token) {
+                        res.send({ token })
+                    })
+                    .catch(err => res.send(err))
+            } else {
+                res.send({ err: 'you have reached max login count' })
+                // res.status('401').send('you have reached max login count')
+            }
         })
         .catch(err => {
-            res.status('401').send('invalid email or password')
+            res.send({ err: 'invalid email or password' })
         })
 }
 

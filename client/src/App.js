@@ -33,7 +33,7 @@ function App() {
       })
         .then(
           response => {
-            console.log(response.data)
+            // console.log(response.data)
             const info = response.data
             setInfo(info)
             setModal(!modal)

@@ -11,7 +11,7 @@ function UrlGenerate() {
     }
 
     const handleSubmit = (validator) => {
-        console.log(input)
+        // console.log(input)
         const data = {
             url: input
         }
@@ -22,7 +22,7 @@ function UrlGenerate() {
                 }
             })
                 .then(response => {
-                    console.log(response.data)
+                    // console.log(response.data)
                     if (response.data.hasOwnProperty('errors')) {
                         Swal.fire({
                             icon: 'error',
@@ -42,7 +42,7 @@ function UrlGenerate() {
                             text: 'Check internet connection',
                         })
                     } else {
-                        console.log(response.data.shortenedUrl)
+                        // console.log(response.data.shortenedUrl)
                         setUrl(response.data.shortenedUrl)
                     }
                 })
