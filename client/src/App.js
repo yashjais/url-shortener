@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom'
+import Home from './Home'
 import Login from './users/login'
 import Register from './users/register'
 import UrlGenerate from './url/urlGenerate'
@@ -103,7 +104,6 @@ function App() {
           </Navbar>
         </div>
 
-
         <div>
           <Modal isOpen={modal} toggle={handleAccount}>
             <ModalHeader toggle={handleAccount}>Account Information</ModalHeader>
@@ -119,6 +119,7 @@ function App() {
           </Modal>
         </div>
 
+        <Route path="/" component={Home} exact={true} />
         <Route path="/login" component={Login} exact={true} />
         <Route path="/register" component={Register} exact={true} />
         <Route path="/url" component={UrlGenerate} exact={true} />

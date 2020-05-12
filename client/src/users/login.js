@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from '../config/axios'
 import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom'
 
 class Login extends React.Component {
     constructor() {
@@ -63,6 +64,7 @@ class Login extends React.Component {
                         <label htmlFor="password">Password</label>
                         <input className="form-control" type="password" id="password" name="password" value={this.state.password} onChange={this.handleChange} />
                     </div>
+                    <Link to="/register">Register</Link> <br /><br />
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
             </div>
