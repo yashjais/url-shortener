@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom'
 import Login from './users/login'
 import Register from './users/register'
+import UrlGenerate from './url/urlGenerate'
 import {
   Collapse,
   Navbar,
@@ -17,16 +18,10 @@ import Swal from 'sweetalert2'
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
-  const [input, setInput] = useState('')
-  const [url, setUrl] = useState('')
   const [info, setInfo] = useState({})
   const [modal, setModal] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
-
-  const handleChange = (e) => {
-    setInput(e.target.value)
-  }
 
   const handleAccount = () => {
     if (localStorage.getItem('authUrlToken')) {
@@ -60,57 +55,11 @@ function App() {
 
   }
 
-  const handleSubmit = (validator) => {
-    console.log(input)
-    const data = {
-      url: input
-    }
-    if (localStorage.getItem('authUrlToken')) {
-      axios.post('/url-shortner', data, {
-        headers: {
-          'x-auth': localStorage.getItem('authUrlToken')
-        }
-      })
-        .then(response => {
-          console.log(response.data)
-          if (response.data.hasOwnProperty('errors')) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Please enter valid URL',
-              text: 'Invalid URL',
-            })
-          } else if (response.data == 'invalid URL') {
-            Swal.fire({
-              icon: 'error',
-              title: 'Please enter valid URL',
-              text: 'Invalid URL',
-            })
-          } else {
-            console.log(response.data.shortenedUrl)
-            setUrl(response.data.shortenedUrl)
-          }
-        })
-        .catch(err => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: err,
-          })
-        })
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'You have to Login to use this website services',
-        text: 'Login Please',
-      })
-      window.location.href = '/login'
-    }
-  }
-
   const handleLogout = () => {
     localStorage.removeItem('authUrlToken')
     window.location.href = ('/')
   }
+
   return (
     <BrowserRouter>
       <div className="container">
@@ -127,6 +76,9 @@ function App() {
                     <NavLink href="/">Home</NavLink>
                   </NavItem>
                   <NavItem>
+                    <NavLink href="/url">Url Shortener</NavLink>
+                  </NavItem>
+                  <NavItem>
                     <NavLink onClick={handleAccount} href="#">Account</NavLink>
                   </NavItem>
                   <NavItem>
@@ -135,6 +87,9 @@ function App() {
                 </React.Fragment> : <React.Fragment>
                     <NavItem>
                       <NavLink href="/">Home</NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink href="/url">Url Shortener</NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink href="/login">Login</NavLink>
@@ -147,22 +102,7 @@ function App() {
             </Collapse>
           </Navbar>
         </div>
-        <br />
-        <br />
 
-        <div style={{ textAlign: "center" }}>
-          <h3 > Enter Your Url Here</h3>
-          <br />
-
-          <input type="text" placeholder="URL" value={input} onChange={handleChange} />
-
-          <button type="submit" onClick={handleSubmit}> Submit </button>
-          <br />
-          <br />
-          {
-            url.length != 0 && <p> {url} </p>
-          }
-        </div>
 
         <div>
           <Modal isOpen={modal} toggle={handleAccount}>
@@ -181,6 +121,7 @@ function App() {
 
         <Route path="/login" component={Login} exact={true} />
         <Route path="/register" component={Register} exact={true} />
+        <Route path="/url" component={UrlGenerate} exact={true} />
       </div>
     </BrowserRouter >
   );
