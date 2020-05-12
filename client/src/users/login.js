@@ -31,13 +31,13 @@ class Login extends React.Component {
                     // console.log(response.data, 'in else')
                     Swal.fire(
                         'Good job!',
-                        'Successfully created account',
+                        'Successfully Logged In',
                         'success'
                     )
                     // console.log(response.data)
                     const token = response.data.token
                     localStorage.setItem('authUrlToken', token)
-                    this.props.history.push('/')
+                    window.location.href = ('/')
                 }
             })
             .catch(err => {
