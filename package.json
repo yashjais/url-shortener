@@ -11,6 +11,10 @@
     "heroku-prebuild": "npm install",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
+  "engines": {
+    "node": "^12.13.0",
+    "npm": "^6.12.0"
+  },
   "author": "Yash Jaiswal",
   "license": "ISC",
   "dependencies": {

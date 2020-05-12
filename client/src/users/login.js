@@ -21,7 +21,7 @@ class Login extends React.Component {
         formData.password = this.state.password
         axios.post('/users/login', formData)
             .then(response => {
-                console.log(response.data)
+                // console.log(response.data)
                 if (response.data.hasOwnProperty('errors')) {
                     // console.log(response.data.message)
                     Swal.fire({
